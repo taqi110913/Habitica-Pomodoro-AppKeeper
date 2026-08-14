@@ -1,0 +1,160 @@
+# Windows Build Workflow - Optimized for GitHub Actions
+# Pre-installed on windows-latest runners: Node.js, PowerShell, Git, Chocolatey
+# This workflow checks for existing installations before installing new tools
+
+name: Build Windows Installer
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  APP_NAME: "My App"
+  APP_BINARY_NAME: "MyApp"
+  APP_VERSION: "1.0.0"
+  PUBLISHER: "Publisher Name"
+  BUILD_AUTOMATION_PATH: "build automation"
+  INSTALLER_SCRIPT: "template.iss"
+  INSTALLER_EXE: "MyApp-Windows64_Installer.exe"
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install Neutralino CLI and build app
+      run: |
+        npm install -g @neutralinojs/neu
+        neu build
+        echo "✅ Neutralino build completed"
+
+    - name: Setup Inno Setup
+      run: |
+        choco install innosetup -y --no-progress
+        
+        $innoPath = @(
+          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
+          "C:\Program Files (x86)\Inno Setup 5\ISCC.exe"
+        ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+        
+        if (-not $innoPath) {
+          throw "Inno Setup installation failed"
+        }
+        
+        echo "INNO_PATH=$innoPath" >> $env:GITHUB_ENV
+
+    - name: Verify build artifacts and compile installer
+      run: |
+        # Verify required files exist
+        $requiredFiles = @(
+          "dist/$env:APP_BINARY_NAME/$env:APP_BINARY_NAME-win_x64.exe",
+          "dist/$env:APP_BINARY_NAME/resources.neu",
+          "resources/icons/favicon.ico",
+          "$env:BUILD_AUTOMATION_PATH/$env:INSTALLER_SCRIPT"
+        )
+        
+        foreach ($file in $requiredFiles) {
+          if (-not (Test-Path $file)) {
+            echo "❌ Required file not found: $file"
+            echo "📁 Checking what files exist in dist directory:"
+            if (Test-Path "dist") {
+              Get-ChildItem -Recurse "dist" | ForEach-Object { echo "  $($_.FullName)" }
+            } else {
+              echo "  dist directory doesn't exist"
+            }
+            throw "Required file not found: $file"
+          }
+        }
+        echo "✅ All required files verified"
+        
+        # Ensure Output directory exists
+        if (-not (Test-Path "Output")) {
+          New-Item -ItemType Directory -Name "Output" -Force
+          echo "📁 Created Output directory"
+        }
+        
+        # Compile installer
+        echo "Compiling Windows installer..."
+        echo "📋 Using Inno Setup at: $env:INNO_PATH"
+        echo "📋 Compiling script: $env:BUILD_AUTOMATION_PATH/$env:INSTALLER_SCRIPT"
+        
+        & $env:INNO_PATH "$env:BUILD_AUTOMATION_PATH/$env:INSTALLER_SCRIPT"
+        
+        if ($LASTEXITCODE -ne 0) {
+          echo "❌ Inno Setup compilation failed with exit code: $LASTEXITCODE"
+          echo "📁 Checking if Output directory exists after compilation:"
+          if (Test-Path "Output") {
+            echo "  Output directory exists, contents:"
+            Get-ChildItem "Output" | ForEach-Object { echo "    $($_.Name)" }
+          } else {
+            echo "  Output directory doesn't exist"
+          }
+          throw "Inno Setup compilation failed with exit code: $LASTEXITCODE"
+        }
+        
+        # Verify installer output (Inno Setup creates installer in Output directory)
+        $installerFile = "Output/$env:INSTALLER_EXE"
+        echo "🔍 Looking for installer at: $installerFile"
+        
+        if (-not (Test-Path $installerFile)) {
+          echo "❌ Installer file not found: $installerFile"
+          echo "📁 Contents of Output directory:"
+          if (Test-Path "Output") {
+            Get-ChildItem "Output" | ForEach-Object { echo "    $($_.Name) ($($_.Length) bytes)" }
+          } else {
+            echo "    Output directory doesn't exist"
+          }
+          echo "📁 Contents of build automation directory:"
+          if (Test-Path "$env:BUILD_AUTOMATION_PATH") {
+            Get-ChildItem "$env:BUILD_AUTOMATION_PATH" | ForEach-Object { echo "    $($_.Name)" }
+          }
+          throw "Installer file not found: $installerFile"
+        }
+        
+        # Create Output directory and move installer there for consistency with other workflows
+        if (-not (Test-Path "Output")) {
+          New-Item -ItemType Directory -Name "Output"
+        }
+        Move-Item $installerFile "Output/"
+        
+        $installerFiles = Get-ChildItem "Output/*.exe"
+        if ($installerFiles.Count -eq 0) {
+          throw "No installer files found in Output directory"
+        }
+        
+        foreach ($file in $installerFiles) {
+          $size = [math]::Round($file.Length / 1MB, 2)
+          echo "✅ Generated: $($file.Name) (${size} MB)"
+        }
+
+    - name: Upload installer artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-installer
+        path: Output/*.exe
+        retention-days: 90
+
+    - name: Create GitHub Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: Output/*.exe
+        name: ${{ env.APP_NAME }} ${{ env.APP_VERSION }}
+        body: |
+          ## ${{ env.APP_NAME }} v${{ env.APP_VERSION }} - Windows Release
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 

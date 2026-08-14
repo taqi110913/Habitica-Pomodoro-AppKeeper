@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Neutralinojs sample app</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div id="neutralinoapp">
+      <h1>Neutralinojs</h1>
+      <div id="pomodoro-timer">
+        <input type="number" id="timer-min" min="0" step="1" placeholder="mm">
+        <div class="colon-separator">:</div>
+        <input type="number" id="timer-sec" min="0" step="1" placeholder="ss">
+        <button id="start-timer">Start Timer</button>
+      </div>
+      <div id="timer-controls">
+        <div id="timer-display">
+          00:00
+        </div>
+        <button id="end-timer">End</button>
+      </div>
+    </div>
+    <script src="/js/neutralino.js"></script>
+    <!-- Your app's source files -->
+    <script src="/js/main.js"></script>
+  </body>
+</html>

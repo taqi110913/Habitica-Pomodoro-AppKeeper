@@ -1,0 +1,165 @@
+#!/bin/bash
+#
+# preinstall - Mac pre-installation script
+# Handles cleanup and preparation before installing Habitica-Pomodoro-AppKeeper
+#
+# This script runs before the app is installed to /Applications
+
+APP_NAME="Habitica-Pomodoro-AppKeeper"
+APP_PATH="/Applications/${APP_NAME}.app"
+OLD_APP_NAMES=("HabiticaPomodoroAppKeeper" "Habitica-Pomodoro-AppKeeper")
+
+echo "Habitica-Pomodoro-AppKeeper Pre-Installation Setup"
+echo "====================================="
+
+# Function to close running app instances
+close_running_app() {
+    echo "Checking for running instances of ${APP_NAME}..."
+    
+    # Kill any running instances of the app
+    pkill -f "${APP_NAME}" 2>/dev/null || true
+    pkill -f "HabiticaPomodoroAppKeeper" 2>/dev/null || true
+    
+    # Wait a moment for processes to terminate
+    sleep 2
+    
+    echo "✓ Closed any running app instances"
+}
+
+# Function to remove old versions
+remove_old_versions() {
+    echo "Removing old versions..."
+    
+    # Remove current version if exists
+    if [ -d "$APP_PATH" ]; then
+        echo "Removing existing installation: $APP_PATH"
+        rm -rf "$APP_PATH"
+    fi
+    
+    # Remove old app names if they exist
+    for OLD_NAME in "${OLD_APP_NAMES[@]}"; do
+        OLD_PATH="/Applications/${OLD_NAME}.app"
+        if [ -d "$OLD_PATH" ]; then
+            echo "Removing old installation: $OLD_PATH"
+            rm -rf "$OLD_PATH"
+        fi
+    done
+    
+    echo "✓ Old versions removed"
+}
+
+# Function to remove old dock entries
+remove_old_dock_entries() {
+    echo "Cleaning up Dock entries..."
+    
+    # Remove any existing dock entries for old versions
+    defaults write com.apple.dock persistent-apps -array $(
+        defaults read com.apple.dock persistent-apps | \
+        grep -v "${APP_NAME}" | \
+        grep -v "HabiticaPomodoroAppKeeper"
+    ) 2>/dev/null || true
+    
+    echo "✓ Dock entries cleaned up"
+}
+
+# Function to remove old desktop shortcuts
+remove_old_shortcuts() {
+    echo "Removing old desktop shortcuts..."
+    
+    DESKTOP_DIR="$HOME/Desktop"
+    
+    if [ -d "$DESKTOP_DIR" ]; then
+        # Remove shortcuts with various possible names
+        rm -f "${DESKTOP_DIR}/${APP_NAME}"
+        rm -f "${DESKTOP_DIR}/${APP_NAME} alias"
+        rm -f "${DESKTOP_DIR}/HabiticaPomodoroAppKeeper"
+    rm -f "${DESKTOP_DIR}/Habitica-Pomodoro-AppKeeper"
+        rm -f "${DESKTOP_DIR}/HabiticaPomodoroAppKeeper-Tools"
+        rm -f "${DESKTOP_DIR}/HabiticaPomodoroAppKeeper-Tools alias"
+    fi
+    
+    echo "✓ Old desktop shortcuts removed"
+}
+
+# Function to clear caches
+clear_app_caches() {
+    echo "Clearing application caches..."
+    
+    # Clear Launch Services cache to remove old app registrations
+    /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
+    
+    # Clear any cached data
+    rm -rf "$HOME/Library/Caches/com.habiticapomodoroappkeeper.app" 2>/dev/null || true
+    rm -rf "$HOME/Library/Application Support/HabiticaPomodoroAppKeeper" 2>/dev/null || true
+    
+    echo "✓ Application caches cleared"
+}
+
+# Function to check system requirements
+check_requirements() {
+    echo "Checking system requirements..."
+    
+    # Get macOS version
+    OS_VERSION=$(sw_vers -productVersion)
+    REQUIRED_VERSION="10.13.0"
+    
+    # Simple version comparison
+    if [[ "$(printf '%s\n' "$REQUIRED_VERSION" "$OS_VERSION" | sort -V | head -n1)" = "$REQUIRED_VERSION" ]]; then
+        echo "✓ macOS $OS_VERSION meets minimum requirement ($REQUIRED_VERSION)"
+    else
+        echo "❌ ERROR: macOS $OS_VERSION does not meet minimum requirement ($REQUIRED_VERSION)"
+        exit 1
+    fi
+    
+    # Check available disk space
+    AVAILABLE_SPACE=$(df -k /Applications | tail -1 | awk '{print $4}')
+    REQUIRED_SPACE=51200  # 50MB in KB
+    
+    if [ "$AVAILABLE_SPACE" -gt "$REQUIRED_SPACE" ]; then
+        echo "✓ Sufficient disk space available"
+    else
+        echo "❌ ERROR: Insufficient disk space. Need at least 50MB in Applications folder"
+        exit 1
+    fi
+}
+
+# Function to backup user preferences (if they exist)
+backup_preferences() {
+    echo "Backing up user preferences..."
+    
+    PREFS_PATH="$HOME/Library/Preferences/com.habiticapomodoroappkeeper.app.plist"
+    BACKUP_PATH="$HOME/Library/Preferences/com.habiticapomodoroappkeeper.app.backup.plist"
+    
+    if [ -f "$PREFS_PATH" ]; then
+        cp "$PREFS_PATH" "$BACKUP_PATH"
+        echo "✓ User preferences backed up to: $BACKUP_PATH"
+    else
+        echo "✓ No existing preferences to backup"
+    fi
+}
+
+# Main pre-installation sequence
+main() {
+    echo "Starting pre-installation tasks for ${APP_NAME}..."
+    echo
+    
+    # Execute pre-installation tasks
+    check_requirements
+    close_running_app
+    backup_preferences
+    remove_old_shortcuts
+    remove_old_dock_entries
+    remove_old_versions
+    clear_app_caches
+    
+    echo
+    echo "=================================="
+    echo "✅ Pre-installation completed successfully!"
+    echo "Ready to install ${APP_NAME}"
+    echo "=================================="
+}
+
+# Run the main pre-installation
+main "$@"
+
+exit 0 

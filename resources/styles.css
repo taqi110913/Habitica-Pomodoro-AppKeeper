@@ -1,0 +1,43 @@
+body {
+    background-color: white;
+}
+
+#neutralinoapp {
+    text-align: center;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+#neutralinoapp h1{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+}
+
+#neutralinoapp > div {
+    font-size: 16px;
+    font-weight: normal;
+}
+#pomodoro-timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+#pomodoro-timer input {
+    width: 10dvw;
+    padding: 2rem;
+    font-size: 1.25rem;
+    text-align: center;
+    margin: 0 1dvw;
+}
+/* Remove up and down arrows from number inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.colon-separator {
+    margin: 0 5px;
+    font-size: 20px;
+}

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Package Project Configuration - Template for macOS Installer -->
+    
+    <!-- Application Information -->
+    <key>PROJECT_SETTINGS</key>
+    <dict>
+        <key>IDENTIFIER</key>
+        <string>com.habiticapomodoroappkeeper.installer</string>
+        
+        <key>NAME</key>
+        <string>Habitica-Pomodoro-AppKeeper</string>
+        
+        <key>VERSION</key>
+        <string>0.1.0-pre-alpha</string>
+        
+        <key>PUBLISHER</key>
+        <string>taqi110913</string>
+        
+        <key>COPYRIGHT</key>
+        <string>© 2026 taqi110913</string>
+        
+        <key>DESCRIPTION</key>
+        <string>{{APP_DESCRIPTION}}</string>
+        
+        <key>LICENSE</key>
+        <string>PROPRIETARY</string>
+    </dict>
+    
+    <!-- Installation Settings (mirrors .iss DefaultDirName, etc.) -->
+    <key>PACKAGE_SETTINGS</key>
+    <dict>
+        <key>INSTALLATION_LOCATION</key>
+        <string>/Applications</string>
+        
+        <key>REQUIRE_ADMIN_AUTHENTICATION</key>
+        <false/>
+        
+        <key>ALLOW_CUSTOMIZATION</key>
+        <false/>
+        
+        <key>OVERWRITE_PERMISSIONS</key>
+        <true/>
+        
+        <key>RELOCATABLE</key>
+        <false/>
+        
+        <key>USE_HFS_COMPRESSION</key>
+        <true/>
+    </dict>
+    
+    <!-- Files and Resources (mirrors .iss [Files] section) -->
+    <key>PACKAGE_FILES</key>
+    <array>
+        <dict>
+            <key>PATH</key>
+            <string>dist/mac_universal/HabiticaPomodoroAppKeeper.app</string>
+            <key>PATH_TYPE</key>
+            <integer>0</integer>
+            <key>CHILDREN</key>
+            <array>
+                <dict>
+                    <key>BUNDLE_CAN_UPGRADE</key>
+                    <false/>
+                    <key>CHILDREN</key>
+                    <array/>
+                    <key>GID</key>
+                    <integer>80</integer>
+                    <key>PATH</key>
+                    <string>HabiticaPomodoroAppKeeper.app</string>
+                    <key>PATH_TYPE</key>
+                    <integer>1</integer>
+                    <key>PERMISSIONS</key>
+                    <integer>493</integer>
+                    <key>TYPE</key>
+                    <integer>3</integer>
+                    <key>UID</key>
+                    <integer>0</integer>
+                </dict>
+            </array>
+        </dict>
+    </array>
+    
+    <!-- Post-Installation Scripts (mirrors .iss functionality) -->
+    <key>PACKAGE_SCRIPTS</key>
+    <dict>
+        <key>POSTINSTALL_PATH</key>
+        <dict>
+            <key>PATH</key>
+            <string>_app_scaffolds/mac/scripts/postinstall</string>
+            <key>PATH_TYPE</key>
+            <integer>0</integer>
+        </dict>
+        
+        <key>PREINSTALL_PATH</key>
+        <dict>
+            <key>PATH</key>
+            <string>_app_scaffolds/mac/scripts/preinstall</string>
+            <key>PATH_TYPE</key>
+            <integer>0</integer>
+        </dict>
+    </dict>
+    
+    <!-- Resources (icons, documentation, etc.) -->
+    <key>PACKAGE_RESOURCES</key>
+    <dict>
+        <key>BACKGROUND</key>
+        <dict>
+            <key>ALIGNMENT</key>
+            <integer>1</integer>
+            <key>CUSTOM_BACKGROUND</key>
+            <true/>
+            <key>PATH</key>
+            <string>_app_scaffolds/mac/installer-background.png</string>
+            <key>PATH_TYPE</key>
+            <integer>0</integer>
+            <key>SCALING</key>
+            <integer>1</integer>
+        </dict>
+        
+        <key>WELCOME</key>
+        <dict>
+            <key>INTERNATIONAL</key>
+            <array>
+                <dict>
+                    <key>LANGUAGE</key>
+                    <string>English</string>
+                    <key>VALUE</key>
+                    <dict>
+                        <key>CUSTOM</key>
+                        <true/>
+                        <key>MODE</key>
+                        <integer>0</integer>
+                        <key>PATH</key>
+                        <string>_app_scaffolds/mac/welcome.rtfd</string>
+                        <key>PATH_TYPE</key>
+                        <integer>0</integer>
+                    </dict>
+                </dict>
+            </array>
+        </key>
+    </dict>
+    
+    <!-- Requirements (minimum system version, etc.) -->
+    <key>PACKAGE_REQUIREMENTS</key>
+    <array>
+        <dict>
+            <key>IC_REQUIREMENT_CHECK_TYPE</key>
+            <integer>0</integer>
+            <key>IC_REQUIREMENT_OPERATOR</key>
+            <integer>4</integer>
+            <key>IC_REQUIREMENT_OS_MINIMUM_VERSION</key>
+            <string>10.13.0</string>
+        </dict>
+    </array>
+</dict>
+</plist> 

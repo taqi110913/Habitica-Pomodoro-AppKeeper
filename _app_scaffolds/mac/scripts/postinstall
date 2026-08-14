@@ -1,0 +1,158 @@
+#!/bin/bash
+#
+# postinstall - Mac post-installation script
+# Template postinstall script for Habitica-Pomodoro-AppKeeper
+#
+# This script runs after the app is installed to /Applications
+# It creates Dock integration and optional desktop shortcuts
+
+APP_NAME="Homestead Tools"
+APP_PATH="/Applications/${APP_NAME}.app"
+DESKTOP_DIR="$HOME/Desktop"
+LAUNCHPAD_DB="$HOME/Library/Application Support/Dock/desktoppicture.db"
+
+echo "Habitica-Pomodoro-AppKeeper Post-Installation Setup"
+echo "======================================="
+
+# Function to add app to Dock (mirrors .iss DefaultGroupName)
+add_to_dock() {
+    echo "Adding ${APP_NAME} to Dock..."
+    
+    # Create plist entry for Dock
+    DOCK_PLIST="$HOME/Library/Preferences/com.apple.dock.plist"
+    
+    # Use defaults command to add to dock
+    defaults write com.apple.dock persistent-apps -array-add "
+        <dict>
+            <key>tile-data</key>
+            <dict>
+                <key>file-data</key>
+                <dict>
+                    <key>_CFURLString</key>
+                    <string>${APP_PATH}</string>
+                    <key>_CFURLStringType</key>
+                    <integer>0</integer>
+                </dict>
+                <key>file-label</key>
+                <string>${APP_NAME}</string>
+                <key>file-type</key>
+                <integer>41</integer>
+            </dict>
+            <key>tile-type</key>
+            <string>file-tile</string>
+        </dict>"
+    
+    # Restart Dock to apply changes
+    killall Dock 2>/dev/null || true
+}
+
+# Function to create desktop shortcut (mirrors .iss desktopicon task)
+create_desktop_shortcut() {
+    echo "Creating desktop shortcut..."
+    
+    # Create alias on desktop (equivalent to Windows desktop shortcut)
+    if [ -d "$DESKTOP_DIR" ]; then
+        DESKTOP_ALIAS="${DESKTOP_DIR}/${APP_NAME}"
+        
+        # Remove existing alias if present
+        rm -f "$DESKTOP_ALIAS"
+        
+        # Create new alias using AppleScript
+        osascript -e "tell application \"Finder\" to make alias file to POSIX file \"${APP_PATH}\" at POSIX file \"${DESKTOP_DIR}\""
+        
+        # Rename the alias to remove " alias" suffix
+        if [ -f "${DESKTOP_DIR}/${APP_NAME} alias" ]; then
+            mv "${DESKTOP_DIR}/${APP_NAME} alias" "$DESKTOP_ALIAS"
+        fi
+        
+        echo "✓ Desktop shortcut created: $DESKTOP_ALIAS"
+    else
+        echo "⚠ Desktop directory not found, skipping desktop shortcut"
+    fi
+}
+
+# Function to register app with Launch Services
+register_app() {
+    echo "Registering app with macOS Launch Services..."
+    
+    # Register the app so it appears in Spotlight, etc.
+    /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$APP_PATH"
+    
+    echo "✓ App registered with Launch Services"
+}
+
+# Function to set app permissions (mirrors .iss file permissions)
+set_permissions() {
+    echo "Setting proper file permissions..."
+    
+    # Ensure the app bundle has correct permissions
+    chmod -R 755 "$APP_PATH"
+    
+    # Ensure the executable is properly marked
+    if [ -f "${APP_PATH}/Contents/MacOS/main" ]; then
+        chmod +x "${APP_PATH}/Contents/MacOS/main"
+    fi
+    
+    echo "✓ File permissions set"
+}
+
+# Function to update app info
+update_app_info() {
+    echo "Updating application information..."
+    
+    # Touch the app to update modification time
+    touch "$APP_PATH"
+    
+    # Clear any extended attributes that might cause issues
+    xattr -cr "$APP_PATH" 2>/dev/null || true
+    
+    echo "✓ Application information updated"
+}
+
+# Main installation sequence
+main() {
+    echo "Starting post-installation tasks for ${APP_NAME}..."
+    echo
+    
+    # Check if app was actually installed
+    if [ ! -d "$APP_PATH" ]; then
+        echo "❌ ERROR: ${APP_NAME} not found at expected location: $APP_PATH"
+        exit 1
+    fi
+    
+    echo "✓ Found ${APP_NAME} at: $APP_PATH"
+    echo
+    
+    # Execute installation tasks
+    set_permissions
+    register_app
+    update_app_info
+    
+    # Optional features (user can be prompted, but for automation we'll enable by default)
+    # This mirrors the .iss [Tasks] section where desktop icon creation is optional
+    
+    # Always add to dock (mirrors .iss DefaultGroupName)
+    add_to_dock
+    
+    # Create desktop shortcut (mirrors .iss desktopicon task)
+    # In a real installer, you might prompt the user for this
+    create_desktop_shortcut
+    
+    echo
+    echo "=================================="
+    echo "✅ Installation completed successfully!"
+    echo
+    echo "You can now:"
+    echo "• Find '${APP_NAME}' in your Applications folder"
+    echo "• Launch it from the Dock"
+    echo "• Use Spotlight search (Cmd+Space) to find it"
+    echo "• Use the desktop shortcut (if created)"
+    echo
+    echo "Thank you for installing ${APP_NAME}!"
+    echo "=================================="
+}
+
+# Run the main installation
+main "$@"
+
+exit 0 
