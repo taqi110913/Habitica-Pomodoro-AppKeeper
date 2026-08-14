@@ -27,11 +27,20 @@ Build:
 neu build
 ```
 
-Downloadable binaries: [use Neutralino Build Scripts](https://github.com/hschneider/neutralino-build-scripts/)
+Downloadable binaries:
+1. When you create a release, GitHub Actions will automatically create working downloadable binaries for Windows, macOS and Linux.
+2. There are also build scripts to create downloadable scripts. Read more about build automation scripts in [this markdown file.](build%20automation/BUILD_AUTOMATION_README.md)
 
 ## License
 
 [MIT](LICENSE)
 
 ## Thank you! ❤️
-- 
+- Contributors:
+
+
+<a href="https://github.com/taqi110913/Habitica-Pomodoro-AppKeeper/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=taqi110913/Habitica-Pomodoro-AppKeeper" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
