@@ -9,10 +9,10 @@ permissions:
   contents: write
 
 env:
-  APP_NAME: "My App"
-  APP_BINARY_NAME: "MyApp"
-  APP_VERSION: "1.0.0"
-  PUBLISHER: "Publisher Name"
+  APP_NAME: "Habitica-Pomodoro-AppKeeper"
+  APP_BINARY_NAME: "HabiticaPomodoroAppKeeper"
+  APP_VERSION: "0.1.0-pre-alpha"
+  PUBLISHER: "taqi110913"
   BUILD_AUTOMATION_PATH: "build automation"
   LINUX_BUILD_SCRIPT: "build-linux.sh"
 
