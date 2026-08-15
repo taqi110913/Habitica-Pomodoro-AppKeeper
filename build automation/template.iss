@@ -18,6 +18,10 @@ Source: "..\dist\HabiticaPomodoroAppKeeper\HabiticaPomodoroAppKeeper-win_x64.exe
 Source: "..\dist\HabiticaPomodoroAppKeeper\resources.neu"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\resources\icons\favicon.ico"; DestDir: "{app}"; Flags: ignoreversion
 
+; note: this is my own addition to allow NeutralinoJS to run correctly
+[Dirs]
+Name: "{app}"; Permissions: users-modify
+
 [Icons]
 Name: "{group}\Habitica-Pomodoro-AppKeeper"; Filename: "{app}\HabiticaPomodoroAppKeeper-win_x64.exe"; IconFilename: "{app}\favicon.ico"
 Name: "{commondesktop}\Habitica-Pomodoro-AppKeeper"; Filename: "{app}\HabiticaPomodoroAppKeeper-win_x64.exe"; IconFilename: "{app}\favicon.ico"; Tasks: desktopicon
