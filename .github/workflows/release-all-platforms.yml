@@ -12,12 +12,12 @@ permissions:
   contents: write
 
 env:
-  APP_NAME: "My App"
-  APP_BINARY_NAME: "MyApp"
-  PUBLISHER: "Publisher Name"
+  APP_NAME: "Habitica-Pomodoro-AppKeeper"
+  APP_BINARY_NAME: "HabiticaPomodoroAppKeeper"
+  PUBLISHER: "taqi110913"
   BUILD_AUTOMATION_PATH: "build automation"
   INSTALLER_SCRIPT: "template.iss"
-  INSTALLER_EXE: "MyApp-Windows64_Installer.exe"
+  INSTALLER_EXE: "HabiticaPomodoroAppKeeper-Windows64_Installer.exe"
   MAC_BUILD_SCRIPT: "build-macos.sh"
   LINUX_BUILD_SCRIPT: "build-linux.sh"
 
