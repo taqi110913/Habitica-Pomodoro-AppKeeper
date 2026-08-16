@@ -1,10 +1,10 @@
-# Habitica-Pomodoro-AppKeeper
+# Habitica Pomodoro AppKeeper
 
 Based on the original [Habitica-Pomodoro-SiteKeeper](https://github.com/ofekmiz/Habitica-Pomodoro-SiteKeeper) by [ofekmiz](https://github.com/ofekmiz).
 
 See also [this issue](https://github.com/ofekmiz/Habitica-Pomodoro-SiteKeeper/issues/84) for original idea for this project.
 
-Habitica-Pomodoro-AppKeeper is an app powered by NeutralinoJS.
+Habitica Pomodoro AppKeeper is an app powered by NeutralinoJS.
 It is still in progress so expect more updates soon.
 
 ## Features (Roadmap)

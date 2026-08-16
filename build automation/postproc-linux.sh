@@ -7,7 +7,7 @@
 # This is called from build-linux.sh after packages are built.
 # Use this to copy additional resources or customize packages.
 #
-# Template Linux postprocessing script for Habitica-Pomodoro-AppKeeper
+# Template Linux postprocessing script for Habitica Pomodoro AppKeeper
 
 if [ "$APP_ARCH" = "x64" ]; then
     :   

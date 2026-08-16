@@ -1,17 +1,17 @@
 #!/bin/bash
 #
 # postinstall - Mac post-installation script
-# Template postinstall script for Habitica-Pomodoro-AppKeeper
+# Template postinstall script for Habitica Pomodoro AppKeeper
 #
 # This script runs after the app is installed to /Applications
 # It creates Dock integration and optional desktop shortcuts
 
-APP_NAME="Homestead Tools"
+APP_NAME="Habitica Pomodoro AppKeeper"
 APP_PATH="/Applications/${APP_NAME}.app"
 DESKTOP_DIR="$HOME/Desktop"
 LAUNCHPAD_DB="$HOME/Library/Application Support/Dock/desktoppicture.db"
 
-echo "Habitica-Pomodoro-AppKeeper Post-Installation Setup"
+echo "Habitica Pomodoro AppKeeper Post-Installation Setup"
 echo "======================================="
 
 # Function to add app to Dock (mirrors .iss DefaultGroupName)

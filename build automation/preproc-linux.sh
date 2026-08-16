@@ -7,7 +7,7 @@
 # This is called from build-linux.sh before packages are built.
 # Use this to prepare platform specific resources.
 #
-# Template Linux preprocessing script for Habitica-Pomodoro-AppKeeper
+# Template Linux preprocessing script for Habitica Pomodoro AppKeeper
 
 if [ "$APP_ARCH" = "x64" ]; then
     :   

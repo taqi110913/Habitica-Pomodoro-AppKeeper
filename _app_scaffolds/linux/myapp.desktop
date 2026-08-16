@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Encoding=UTF-8
-Name=Habitica-Pomodoro-AppKeeper
+Name=Habitica Pomodoro AppKeeper
 Icon={{APP_ICON_PATH}}
 Exec={{APP_EXEC}}
 Path={{APP_PATH}}

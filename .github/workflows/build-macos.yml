@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 env:
-  APP_NAME: "Habitica-Pomodoro-AppKeeper"
+  APP_NAME: "Habitica Pomodoro AppKeeper"
   APP_BINARY_NAME: "HabiticaPomodoroAppKeeper"
   APP_VERSION: "0.1.0-pre-alpha"
   PUBLISHER: "taqi110913"

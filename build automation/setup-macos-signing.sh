@@ -10,7 +10,7 @@
 # - Xcode or Xcode Command Line Tools
 
 echo
-echo -e "\033[1mmacOS Code Signing Setup for Habitica-Pomodoro-AppKeeper\033[0m"
+echo -e "\033[1mmacOS Code Signing Setup for Habitica Pomodoro AppKeeper\033[0m"
 echo
 
 # Install required tools

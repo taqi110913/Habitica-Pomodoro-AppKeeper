@@ -1,15 +1,15 @@
 #!/bin/bash
 #
 # preinstall - Mac pre-installation script
-# Handles cleanup and preparation before installing Habitica-Pomodoro-AppKeeper
+# Handles cleanup and preparation before installing Habitica Pomodoro AppKeeper
 #
 # This script runs before the app is installed to /Applications
 
-APP_NAME="Habitica-Pomodoro-AppKeeper"
+APP_NAME="Habitica Pomodoro AppKeeper"
 APP_PATH="/Applications/${APP_NAME}.app"
-OLD_APP_NAMES=("HabiticaPomodoroAppKeeper" "Habitica-Pomodoro-AppKeeper")
+OLD_APP_NAMES=("HabiticaPomodoroAppKeeper" "Habitica Pomodoro AppKeeper")
 
-echo "Habitica-Pomodoro-AppKeeper Pre-Installation Setup"
+echo "Habitica Pomodoro AppKeeper Pre-Installation Setup"
 echo "====================================="
 
 # Function to close running app instances
@@ -73,7 +73,7 @@ remove_old_shortcuts() {
         rm -f "${DESKTOP_DIR}/${APP_NAME}"
         rm -f "${DESKTOP_DIR}/${APP_NAME} alias"
         rm -f "${DESKTOP_DIR}/HabiticaPomodoroAppKeeper"
-    rm -f "${DESKTOP_DIR}/Habitica-Pomodoro-AppKeeper"
+    rm -f "${DESKTOP_DIR}/Habitica Pomodoro AppKeeper"
         rm -f "${DESKTOP_DIR}/HabiticaPomodoroAppKeeper-Tools"
         rm -f "${DESKTOP_DIR}/HabiticaPomodoroAppKeeper-Tools alias"
     fi

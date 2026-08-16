@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 env:
-  APP_NAME: "Habitica-Pomodoro-AppKeeper"
+  APP_NAME: "Habitica Pomodoro AppKeeper"
   APP_BINARY_NAME: "HabiticaPomodoroAppKeeper"
   PUBLISHER: "taqi110913"
   BUILD_AUTOMATION_PATH: "build automation"
