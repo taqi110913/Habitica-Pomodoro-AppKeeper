@@ -3,26 +3,31 @@
   <head>
     <meta charset="UTF-8">
     <title>Neutralinojs sample app</title>
+    <link rel="icon" href="/icons/favicon.ico">
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
     <div id="neutralinoapp">
-      <h1>Neutralinojs</h1>
+      <h1>Habitica Pomodoro AppKeeper</h1>
       <div id="pomodoro-timer">
-        <input type="number" id="timer-min" min="0" step="1" placeholder="mm">
-        <div class="colon-separator">:</div>
-        <input type="number" id="timer-sec" min="0" step="1" placeholder="ss">
-        <button id="start-timer">Start Timer</button>
-      </div>
-      <div id="timer-controls">
-        <div id="timer-display">
-          00:00
+        <button id="tomato-button" type="button">
+          🍅
+        </button>
+  
+        <div id="pomodoro-countdown">25:00</div>
+  
+        <div class="pomodoro-buttons">
+          <button type="button" id="playPausePomodoro">
+            play/pause
+          </button>
+          <button type="button" id="resetPomodoro">
+            reset
+          </button>
         </div>
-        <button id="end-timer">End</button>
       </div>
     </div>
     <script src="/js/neutralino.js"></script>
     <!-- Your app's source files -->
-    <script src="/js/main.js"></script>
+    <script src="/js/main.js" type="module"></script>
   </body>
 </html>

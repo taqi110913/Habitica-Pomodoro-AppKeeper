@@ -42,6 +42,7 @@ Downloadable binaries:
 - [OfeX](https://github.com/ofekmiz) for inspiration and support from this [original project](https://github.com/ofekmiz/Habitica-Pomodoro-SiteKeeper). Also thanks for the images (see this [credits page](https://habitica.fandom.com/wiki/Habitica_Pomodoro_SiteKeeper#Art_Credits))
 - [NeutralinoJS](https://neutralino.js.org) for your amazing and lightweight framework! I could never imagine the existence of this project without your help.
 - [Tolin Simpson](https://github.com/TolinSimpson) for [this amazing automated build tool](https://github.com/TolinSimpson/neutralinojs-build-automation-template) made specially for NeutralinoJS.
+- [Mayuko Inoue](https://github.com/hellomayuko) for the original [Pomodoro timer](https://github.com/hellomayuko/Pomodoro-Countdown). It makes things so much easier and quicker!
 - Contributors:
 
 
