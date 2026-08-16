@@ -70,18 +70,22 @@ function blockApp() {
     Neutralino.window.setFullScreen(true);
 }
 
-let countdownTimer; // Global variable to hold the countdown timer interval
+let timerInterval; // Global variable to hold the timer interval
 function startPomodoroTimer() {
-    const minInput = document.getElementById("timer-min");
-    const secInput = document.getElementById("timer-sec");
-    let currentTime = new Date().getDate();
-    const stopTime = new Date(currentTime + (minInput.value * 60000) + (secInput.value * 1000)).getDate();
-    countdownTimer = setInterval(()=>{
-        currentTime = new Date().getDate();
-        document.getElementById("timer-display").innerText = `${Math.floor((stopTime - currentTime) / 60000)}:${Math.floor(((stopTime - currentTime) % 60000) / 1000)}`;
-        if(currentTime >= stopTime) {
-            clearInterval(countdownTimer);
+    const timerDurationMinutes = 25;
+    const endTimerTime = new Date();
+    endTimerTime.setMinutes(endTimerTime.getMinutes() + timerDurationMinutes);
+    timerInterval = setInterval(()=>{
+        const currentTime = new Date();
+        if(currentTime >= endTimerTime) {
+            clearInterval(timerInterval);
         }
+        const timeLeft = endTimerTime.getTime() - currentTime.getTime();
+        const minutesLeft = Math.floor(timeLeft / 60000);
+        const secondsLeft = Math.floor((timeLeft % 60000) / 1000);
+        document.querySelector("#timer-display").textContent = `
+            ${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}
+        `
     }, 1000);
 }
 
@@ -91,9 +95,20 @@ Neutralino.init();
 // Register event listeners
 Neutralino.events.on("trayMenuItemClicked", onTrayMenuItemClicked);
 Neutralino.events.on("windowClose", onWindowClose);
-document.querySelector("#start-timer").addEventListener("click", startPomodoroTimer);
-document.querySelector("#end-timer").addEventListener("click", () => {
-    clearInterval(countdownTimer);
+const toggleTimerButton = document.querySelector("#toggle-timer");
+toggleTimerButton.addEventListener("click", () => {
+    if(toggleTimerButton.classList.contains("start-timer")) {
+        startPomodoroTimer();
+        toggleTimerButton.textContent = "End Timer";
+        toggleTimerButton.classList.remove("start-timer");
+        toggleTimerButton.classList.add("end-timer");
+    } else if(toggleTimerButton.classList.contains("end-timer")) {
+        clearInterval(timerInterval);
+        document.querySelector("#timer-display").textContent = "00:00";
+        toggleTimerButton.textContent = "Start Timer";
+        toggleTimerButton.classList.remove("end-timer");
+        toggleTimerButton.classList.add("start-timer");
+    }
 });
 
 // Conditional initialization: Set up system tray if not running on macOS

@@ -9,7 +9,7 @@ body {
     cursor: default;
 }
 
-#neutralinoapp h1{
+#neutralinoapp *{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 20px;
 }
@@ -20,24 +20,16 @@ body {
 }
 #pomodoro-timer {
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin-top: 20px;
+    gap: 1rem;
 }
-#pomodoro-timer input {
-    width: 10dvw;
-    padding: 2rem;
-    font-size: 1.25rem;
-    text-align: center;
-    margin: 0 1dvw;
+#pomodoro-controls{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
 }
-/* Remove up and down arrows from number inputs */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.colon-separator {
-    margin: 0 5px;
-    font-size: 20px;
+#timer-display{
+    font-size: 5rem;
 }
