@@ -71,10 +71,9 @@ function blockApp() {
 }
 
 let timerInterval; // Global variable to hold the timer interval
-function startPomodoroTimer() {
-    const timerDurationMinutes = 25;
+async function startPomodoroTimer() {
     const endTimerTime = new Date();
-    endTimerTime.setMinutes(endTimerTime.getMinutes() + timerDurationMinutes);
+    endTimerTime.setMinutes(endTimerTime.getMinutes() + (parseInt(await Neutralino.storage.getData("timerDurationMinutes"))));
     timerInterval = setInterval(()=>{
         const currentTime = new Date();
         if(currentTime >= endTimerTime) {
@@ -95,6 +94,15 @@ Neutralino.init();
 // Register event listeners
 Neutralino.events.on("trayMenuItemClicked", onTrayMenuItemClicked);
 Neutralino.events.on("windowClose", onWindowClose);
+
+(async ()=>{
+    try{
+        await Neutralino.storage.getData("timerDurationMinutes");
+    } catch(error) {
+        await Neutralino.storage.setData("timerDurationMinutes", "25");
+    }
+})();
+
 const toggleTimerButton = document.querySelector("#toggle-timer");
 toggleTimerButton.addEventListener("click", () => {
     if(toggleTimerButton.classList.contains("start-timer")) {
@@ -109,6 +117,25 @@ toggleTimerButton.addEventListener("click", () => {
         toggleTimerButton.classList.remove("end-timer");
         toggleTimerButton.classList.add("start-timer");
     }
+});
+
+const timerSetupButton = document.querySelector("#timer-setup-button");
+timerSetupButton.addEventListener("click", () => {
+    const pomodoroTimerDiv = document.querySelector("#pomodoro-timer");
+    const timerSetupDiv = document.querySelector("#timer-setup");
+    pomodoroTimerDiv.classList.add("hidden");
+    timerSetupDiv.classList.remove("hidden");
+});
+
+const saveTimerSetupButton = document.querySelector("#save-timer-setup");
+saveTimerSetupButton.addEventListener("click", () => {
+    const pomodoroTimerDurationInput = document.querySelector("#pomodoro-timer-duration");
+    const timerDurationMinutes = parseInt(pomodoroTimerDurationInput.value);
+    Neutralino.storage.setData("timerDurationMinutes", timerDurationMinutes.toString());
+    const pomodoroTimerDiv = document.querySelector("#pomodoro-timer");
+    const timerSetupDiv = document.querySelector("#timer-setup");
+    pomodoroTimerDiv.classList.remove("hidden");
+    timerSetupDiv.classList.add("hidden");
 });
 
 // Conditional initialization: Set up system tray if not running on macOS

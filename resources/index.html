@@ -10,14 +10,32 @@
       <h1>Habitica Pomodoro AppKeeper</h1>
       <div id="pomodoro-timer">
         <div id="pomodoro-controls">
+          <button id="timer-setup-button">Setup Timer</button>
           <button id="toggle-timer" class="start-timer">Start Timer</button>
         </div>
         <div id="timer-display">
           00:00
         </div>
       </div>
-      <div id="timer-setup">
-        
+      <div id="timer-setup" class="hidden">
+        <div>
+          <input type="number" id="pomodoro-timer-duration" class="timer-input-big" value="25" min="1" step="1">
+          <label for="pomodoro-timer-duration">Pomodoro (minutes)</label>
+        </div>
+        <div>
+          <input type="number" id="pomodoro-short-break-duration" class="timer-input-big" value="5" min="1" step="1">
+          <label for="pomodoro-short-break-duration">Short Break (minutes)</label>
+        </div>
+        <div>
+          <input type="number" id="pomodoro-long-break-duration" class="timer-input-big" value="30" min="1" step="1">
+          <label for="pomodoro-long-break-duration">Long Break (minutes)</label>
+        </div>
+        <div>
+          <label for="pomodoro-long-break-interval">Long Break after</label>
+          <input type="number" id="pomodoro-long-break-interval" class="timer-input-small" value="4" min="1" step="1">
+          Pomodoros
+        </div>
+        <button id="save-timer-setup">Save</button>
       </div>
     </div>
     <script src="/js/neutralino.js"></script>
