@@ -1,5 +1,5 @@
 import { setTray, onTrayMenuItemClicked, onWindowClose, minimizeToTray } from "./general.js";
-import { startPomodoroTimer } from "./pomodoro.js";
+import { timerInterval, startPomodoroTimer } from "./pomodoro.js";
 import { blockApp } from "./blocker.js";
 import {} from "./habitica.js";
 
@@ -10,6 +10,7 @@ Neutralino.init();
 Neutralino.events.on("trayMenuItemClicked", onTrayMenuItemClicked);
 Neutralino.events.on("windowClose", onWindowClose);
 
+/* ==== Setup variables and storage ==== */
 (async ()=>{ // check whether timerDurationMinutes is set in storage, if not set it to default 25 minutes
     try{
         await Neutralino.storage.getData("timerDurationMinutes");

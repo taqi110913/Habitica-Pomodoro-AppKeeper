@@ -1,5 +1,5 @@
+export let timerInterval; // Global variable to hold the timer interval
 export async function startPomodoroTimer() {
-    globalThis.timerInterval; // Global variable to hold the timer interval
     const endTimerTime = new Date();
     endTimerTime.setMinutes(endTimerTime.getMinutes() + (parseInt(await Neutralino.storage.getData("timerDurationMinutes"))));
     timerInterval = setInterval(()=>{
