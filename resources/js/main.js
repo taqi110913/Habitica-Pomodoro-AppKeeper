@@ -1,92 +1,7 @@
-// This is just a sample app. You can structure your Neutralinojs app code as you wish.
-// This example app is written with vanilla JavaScript and HTML.
-// Feel free to use any frontend framework you like :)
-// See more details: https://neutralino.js.org/docs/how-to/use-a-frontend-library
-
-
-/*
-    Function to set up a system tray menu with options specific to the window mode.
-    This function checks if the application is running in window mode, and if so,
-    it defines the tray menu items and sets up the tray accordingly.
-*/
-function setTray() {
-    // Tray menu is only available in window mode
-    if(NL_MODE != "window") {
-        console.log("INFO: Tray menu is only available in the window mode.");
-        return;
-    }
-
-    // Define tray menu items
-    let tray = {
-        icon: "/resources/icons/trayIcon.png",
-        menuItems: [
-            {id: "SHOW", text: "Show App"},
-            {id: "SEP", text: "-"},
-            {id: "QUIT", text: "Quit"}
-        ]
-    };
-
-    // Set the tray menu
-    Neutralino.os.setTray(tray);
-}
-
-/*
-    Function to handle click events on the tray menu items.
-    This function performs different actions based on the clicked item's ID,
-    such as displaying version information or exiting the application.
-*/
-function onTrayMenuItemClicked(event) {
-    switch(event.detail.id) {
-        case "SHOW":
-            // Show the application window
-            Neutralino.window.show();
-            break;
-        case "QUIT":
-            // Exit the application
-            Neutralino.app.exit();
-            break;
-    }
-}
-
-/*
-    Function to handle the window close event by gracefully exiting the Neutralino application.
-*/
-function onWindowClose() {
-    Neutralino.app.exit();
-}
-
-/*
-    Function to minimize to system tray
-*/
-function minimizeToTray() {
-    Neutralino.window.hide();
-}
-
-/*
-    Function to block a blocked app
-*/
-function blockApp() {
-    Neutralino.window.focus();
-    Neutralino.window.setFullScreen(true);
-}
-
-let timerInterval; // Global variable to hold the timer interval
-async function startPomodoroTimer() {
-    const endTimerTime = new Date();
-    endTimerTime.setMinutes(endTimerTime.getMinutes() + (parseInt(await Neutralino.storage.getData("timerDurationMinutes"))));
-    timerInterval = setInterval(()=>{
-        const currentTime = new Date();
-        if(currentTime >= endTimerTime) {
-            clearInterval(timerInterval);
-        }
-        const timeLeft = endTimerTime.getTime() - currentTime.getTime();
-        const minutesLeft = Math.floor(timeLeft / 60000);
-        const secondsLeft = Math.floor((timeLeft % 60000) / 1000);
-        document.querySelector("#timer-display").textContent = `
-            ${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}
-        `
-    }, 1000);
-}
+import { setTray, onTrayMenuItemClicked, onWindowClose, minimizeToTray } from "./general.js";
+import { startPomodoroTimer } from "./pomodoro.js";
+import { blockApp } from "./blocker.js";
+import {} from "./habitica.js";
 
 // Initialize Neutralino
 Neutralino.init();
@@ -95,7 +10,7 @@ Neutralino.init();
 Neutralino.events.on("trayMenuItemClicked", onTrayMenuItemClicked);
 Neutralino.events.on("windowClose", onWindowClose);
 
-(async ()=>{
+(async ()=>{ // check whether timerDurationMinutes is set in storage, if not set it to default 25 minutes
     try{
         await Neutralino.storage.getData("timerDurationMinutes");
     } catch(error) {
