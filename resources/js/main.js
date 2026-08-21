@@ -1,62 +1,24 @@
-import { setTray, onTrayMenuItemClicked, onWindowClose, minimizeToTray } from "./general.js";
-import { timerInterval, startPomodoroTimer } from "./pomodoro.js";
-import { blockApp } from "./blocker.js";
-import {} from "./habitica.js";
+import * as general from "./general.js";
+import * as pomodoro from "./pomodoro.js";
+import * as blocker from "./blocker.js";
+import * as habitica from "./habitica.js";
 
 // Initialize Neutralino
 Neutralino.init();
 
 // Register event listeners
-Neutralino.events.on("trayMenuItemClicked", onTrayMenuItemClicked);
-Neutralino.events.on("windowClose", onWindowClose);
+Neutralino.events.on("trayMenuItemClicked", general.onTrayMenuItemClicked);
+Neutralino.events.on("windowClose", general.onWindowClose);
 
 /* ==== Setup variables and storage ==== */
-(async ()=>{ // check whether timerDurationMinutes is set in storage, if not set it to default 25 minutes
-    try{
-        await Neutralino.storage.getData("timerDurationMinutes");
-    } catch(error) {
-        await Neutralino.storage.setData("timerDurationMinutes", "25");
-    }
-})();
+general.checkTimerDuration();
 
-const toggleTimerButton = document.querySelector("#toggle-timer");
-toggleTimerButton.addEventListener("click", () => {
-    if(toggleTimerButton.classList.contains("start-timer")) {
-        startPomodoroTimer();
-        toggleTimerButton.textContent = "End Timer";
-        toggleTimerButton.classList.remove("start-timer");
-        toggleTimerButton.classList.add("end-timer");
-    } else if(toggleTimerButton.classList.contains("end-timer")) {
-        clearInterval(timerInterval);
-        document.querySelector("#timer-display").textContent = "00:00";
-        toggleTimerButton.textContent = "Start Timer";
-        toggleTimerButton.classList.remove("end-timer");
-        toggleTimerButton.classList.add("start-timer");
-    }
-});
-
-const timerSetupButton = document.querySelector("#timer-setup-button");
-timerSetupButton.addEventListener("click", () => {
-    const pomodoroTimerDiv = document.querySelector("#pomodoro-timer");
-    const timerSetupDiv = document.querySelector("#timer-setup");
-    pomodoroTimerDiv.classList.add("hidden");
-    timerSetupDiv.classList.remove("hidden");
-});
-
-const saveTimerSetupButton = document.querySelector("#save-timer-setup");
-saveTimerSetupButton.addEventListener("click", () => {
-    const pomodoroTimerDurationInput = document.querySelector("#pomodoro-timer-duration");
-    const timerDurationMinutes = parseInt(pomodoroTimerDurationInput.value);
-    Neutralino.storage.setData("timerDurationMinutes", timerDurationMinutes.toString());
-    const pomodoroTimerDiv = document.querySelector("#pomodoro-timer");
-    const timerSetupDiv = document.querySelector("#timer-setup");
-    pomodoroTimerDiv.classList.remove("hidden");
-    timerSetupDiv.classList.add("hidden");
-});
+/* ==== Setup Pomodoro Timer ==== */
+pomodoro.initializePomodoroTimer();
 
 // Conditional initialization: Set up system tray if not running on macOS
 if(NL_OS != "Darwin") { // TODO: Fix https://github.com/neutralinojs/neutralinojs/issues/615
-    setTray();
+    general.setTray();
 }
 
 /*

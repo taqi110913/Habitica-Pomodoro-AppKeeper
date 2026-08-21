@@ -39,3 +39,10 @@ export function onWindowClose() {
 export function minimizeToTray() {
     Neutralino.window.hide();
 }
+export async function checkTimerDuration() {
+    try{
+        await Neutralino.storage.getData("timerDurationMinutes");
+    } catch(error) {
+        await Neutralino.storage.setData("timerDurationMinutes", "25");
+    }
+}
