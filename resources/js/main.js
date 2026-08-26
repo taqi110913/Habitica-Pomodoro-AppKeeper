@@ -11,7 +11,14 @@ Neutralino.events.on("trayMenuItemClicked", general.onTrayMenuItemClicked);
 Neutralino.events.on("windowClose", general.onWindowClose);
 
 /* ==== Setup variables and storage ==== */
-general.checkTimerDuration();
+general.detectSettingsPageSave(pomodoro); // Pass pomodoro object to run code from that module
+var userSettings; // attach to globalThis
+(async () => {
+  userSettings = await general.getSettings();
+  pomodoro.updatePomodoroValues(userSettings); // Update pomodoroDuration and other pomodoro-related values based on userSettings
+})(); // Use async function (IIFE) to get userSettings and update pomodoro values
+
+document.getElementById("open-settings-button").addEventListener("click", general.openSettingsPage);
 
 /* ==== Setup Pomodoro Timer ==== */
 pomodoro.initializePomodoroTimer();

@@ -105,3 +105,8 @@ export function initializePomodoroTimer (){
     document.querySelector("#playPausePomodoro").addEventListener("click", playPauseCountdown);
     document.querySelector("#resetPomodoro").addEventListener("click", restartCountdown);
 }
+
+export function updatePomodoroValues(passedUserSettings) {
+    pomodoroDuration = parseInt(passedUserSettings.timerDurationMinutes) * secondsInaMinute;
+    restartCountdown();
+}
