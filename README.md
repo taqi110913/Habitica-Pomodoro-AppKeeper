@@ -9,8 +9,11 @@ It is still in progress so expect more updates soon.
 
 ## Features (Roadmap)
 - [ ] Pomodoro Timer by your side to keep focused
+  - 🟧 Partially finished: only main focus time has been implemented, rest time etc. TBA.
 - [ ] App Blocker that limits your access to distracting apps that you choose in this app.
 - [ ] Habitica Integration: Every Pomodoro session will give you gold coins in your Habitica account. To access your blocked apps, you will have to pay some of your gold coins.
+- [ ] Settings Page
+  - 🟧 Partially finished: more settings options to be added
 
 ## Developing
 Make sure you have downloaded neu CLI. If you haven't, get it first:
@@ -51,3 +54,6 @@ Downloadable binaries:
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
+
+## Notes
+- TBA: To be added
