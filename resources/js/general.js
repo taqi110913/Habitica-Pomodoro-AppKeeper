@@ -39,10 +39,34 @@ export function onWindowClose() {
 export function minimizeToTray() {
     Neutralino.window.hide();
 }
-export async function checkTimerDuration() {
+export async function getSettings() {
     try{
-        await Neutralino.storage.getData("timerDurationMinutes");
+        return JSON.parse(await Neutralino.storage.getData("userSettings"));
     } catch(error) {
-        await Neutralino.storage.setData("timerDurationMinutes", "25");
+        console.log("No user settings found. Attempting to create default settings…");
+        await Neutralino.storage.setData("userSettings", JSON.stringify({
+            timerDurationMinutes: "25"
+        }));
+        return JSON.parse(await Neutralino.storage.getData("userSettings"));
     }
+}
+export function openSettingsPage (){
+    Neutralino.window.create("/html/settings.html", {
+        title: "Habitica Pomodoro AppKeeper Settings"
+    });
+}
+export async function detectSettingsPageSave(passedPomodoro) {
+    let storageWatcher = await Neutralino.filesystem.createWatcher(NL_PATH);
+    await Neutralino.events.on('watchFile', async (event) => {
+        if(storageWatcher == event.detail.id) {
+            console.log("Storage changed: ", event.detail);
+            if(event.detail.dir === "..storage"){
+                getSettings();
+                passedPomodoro.updatePomodoroValues(await getSettings());
+            }
+        }
+    });
+}
+export async function saveSettings(newSettings) {
+    await Neutralino.storage.setData("userSettings", JSON.stringify(newSettings));
 }

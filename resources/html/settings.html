@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/styles.css">
+        <title>Settings</title>
+    </head>
+    <body>
+        <div id="neutralinoapp">
+            <h1>Settings</h1>
+            <p>Note: after changing the settings, please remember to click "Save" and then close the window. This will ensure the changes are applied correctly.</p>
+            <form id="settings-form">
+                <label for="timer-duration-minutes">Pomodoro Duration (minutes):</label>
+                <input type="number" id="timer-duration-minutes" name="timerDurationMinutes" min="1" max="60" step="1" value="25" required>
+
+                <!-- TODO: Add more settings fields here -->
+
+                <button type="button" id="save-settings-button">Save</button>
+            </form>
+        </div>
+        <script src="/js/neutralino.js"></script>
+        <script type="module">
+            import * as general from '/js/general.js';
+            // Initialize Neutralino
+            Neutralino.init();
+
+            // Register event listeners
+            Neutralino.events.on("windowClose", general.onWindowClose);
+
+            // Load settings from storage and populate the form
+            let userSettings; // Declare userSettings variable in global scope
+            (async function (){
+                userSettings = await general.getSettings();
+                document.getElementById("timer-duration-minutes").value = userSettings.timerDurationMinutes;
+                // TODO: add more settings fields here
+            })(); // Run as async function to allow for await requests
+
+            // Save settings when the save button is clicked
+            document.getElementById("save-settings-button").addEventListener("click", () => {
+                const newSettings = {
+                    timerDurationMinutes: parseInt(document.getElementById("timer-duration-minutes").value, 10)
+                };
+                general.saveSettings(newSettings);
+            });
+        </script>
+    </body>
+</html>

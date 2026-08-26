@@ -19,7 +19,8 @@
     "window.*",
     "events.*",
     "debug.log",
-    "storage.*"
+    "storage.*",
+    "filesystem.*"
   ],
   "globalVariables": {
     "TEST1": "Hello",
