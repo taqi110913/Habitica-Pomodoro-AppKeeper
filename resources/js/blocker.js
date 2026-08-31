@@ -1,5 +1,6 @@
-/*
-    Function to block a blocked app
+// @ts-check (checks code using JSDoc using TypeScript rules)
+/**
+*  Function to block a blocked app
 */
 export function blockApp() {
     Neutralino.window.focus();

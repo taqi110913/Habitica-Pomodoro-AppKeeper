@@ -32,14 +32,16 @@
             let userSettings; // Declare userSettings variable in global scope
             (async function (){
                 userSettings = await general.getSettings();
-                document.getElementById("timer-duration-minutes").value = userSettings.timerDurationMinutes;
+                document.getElementById("timer-duration-minutes").value = userSettings.pomodoro.timerDurationMinutes;
                 // TODO: add more settings fields here
             })(); // Run as async function to allow for await requests
 
             // Save settings when the save button is clicked
             document.getElementById("save-settings-button").addEventListener("click", () => {
                 const newSettings = {
-                    timerDurationMinutes: parseInt(document.getElementById("timer-duration-minutes").value, 10)
+                    pomodoro: {
+                        timerDurationMinutes: parseInt(document.getElementById("timer-duration-minutes").value, 10)
+                    }
                 };
                 general.saveSettings(newSettings);
             });

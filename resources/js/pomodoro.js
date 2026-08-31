@@ -1,13 +1,28 @@
-// Thanks to https://github.com/hellomayuko/Pomodoro-Countdown for the original code
+// @ts-check (checks code using JSDoc using TypeScript rules)
+/**
+ * @typedef {import("./global").UserSettings} UserSettings
+ */
+/**
+ * Thanks to https://github.com/hellomayuko/Pomodoro-Countdown for the original code
+*/
 
 export const secondsInaMinute = 60;
 
+/**
+ * An interval. Later set with setInterval()
+ * @type {number}
+ * See also {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/setInterval#return_value} for the official documentation.
+ */
 export let interval;
+
 export let isPaused = true;
 export let countdownWasStarted = false;
 export let pomodoroDuration = 25 * secondsInaMinute; // Default duration of 25 minutes
 export let timeLeftInSeconds = 0;
 export const pomodoroCountdown = document.getElementById("pomodoro-countdown");
+if(!pomodoroCountdown){
+  throw new Error(`Element with id "pomodoro-countdown" not found.`);
+}
 
 // Button Handlers
 
@@ -76,10 +91,14 @@ export function resetCountdown() {
 
 // View Updates
 export function updatePlayPauseButton() {
+  const playPausePomodoroElement = document.querySelector("#playPausePomodoro");
+  if(!playPausePomodoroElement){
+    throw new Error(`Element with id "playPausePomodoro" not found`)
+  }
     if(isPaused) {
-        document.querySelector("#playPausePomodoro").textContent = "play";
+        playPausePomodoroElement.textContent = "pause";
     } else {
-        document.querySelector("#playPausePomodoro").textContent = "pause";
+        playPausePomodoroElement.textContent = "play";
     }
 }
 
@@ -93,8 +112,9 @@ export function updateTimeString() {
     secondsString = seconds
   }
 
-  // Output the result in an element with id="demo"
-  pomodoroCountdown.innerHTML = minutes + ":" + secondsString;
+  if(pomodoroCountdown){
+    pomodoroCountdown.innerHTML = minutes + ":" + secondsString;
+  }
 }
 
 export function alertTimerEnd() {
@@ -102,11 +122,14 @@ export function alertTimerEnd() {
 }
 
 export function initializePomodoroTimer (){
-    document.querySelector("#playPausePomodoro").addEventListener("click", playPauseCountdown);
-    document.querySelector("#resetPomodoro").addEventListener("click", restartCountdown);
+    document.querySelector("#playPausePomodoro")?.addEventListener("click", playPauseCountdown);
+    document.querySelector("#resetPomodoro")?.addEventListener("click", restartCountdown);
 }
 
+/**
+ * @param {UserSettings} passedUserSettings
+ */
 export function updatePomodoroValues(passedUserSettings) {
-    pomodoroDuration = parseInt(passedUserSettings.timerDurationMinutes) * secondsInaMinute;
+    pomodoroDuration = parseInt(passedUserSettings.pomodoro.timerDurationMinutes) * secondsInaMinute;
     restartCountdown();
 }

@@ -1,3 +1,4 @@
+// @ts-check (checks code using JSDoc using TypeScript rules)
 import * as general from "./general.js";
 import * as pomodoro from "./pomodoro.js";
 import * as blocker from "./blocker.js";
@@ -14,11 +15,14 @@ Neutralino.events.on("windowClose", general.onWindowClose);
 general.detectSettingsPageSave(pomodoro); // Pass pomodoro object to run code from that module
 var userSettings; // attach to globalThis
 (async () => {
+  /**
+   * @type {Object} 
+   */
   userSettings = await general.getSettings();
   pomodoro.updatePomodoroValues(userSettings); // Update pomodoroDuration and other pomodoro-related values based on userSettings
 })(); // Use async function (IIFE) to get userSettings and update pomodoro values
 
-document.getElementById("open-settings-button").addEventListener("click", general.openSettingsPage);
+document.getElementById("open-settings-button")?.addEventListener("click", general.openSettingsPage);
 
 /* ==== Setup Pomodoro Timer ==== */
 pomodoro.initializePomodoroTimer();
