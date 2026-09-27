@@ -58,7 +58,7 @@ export async function getSettings() {
         console.log("No user settings found. Attempting to create default settings…");
         await Neutralino.storage.setData("userSettings", JSON.stringify({
             pomodoro: {
-                timerDurationMinutes: "25"
+                timerDurationMinutes: 25
             }
         }));
         return JSON.parse(await Neutralino.storage.getData("userSettings"));

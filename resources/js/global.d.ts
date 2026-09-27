@@ -1,4 +1,4 @@
-import * as NeutralinoLib from 'neutralino.d.ts';
+import * as NeutralinoLib from 'neutralino';
 
 declare global {
     const Neutralino: typeof NeutralinoLib;
@@ -33,6 +33,19 @@ declare global {
 
 export interface UserSettings {
     pomodoro: {
-        timerDurationMinutes: string
+        timerDurationMinutes?: number,
+        shortbreakDuration?: number,
+        longBreakDuration?: number,
+        longBreakEvery?: number
+    },
+    habitica: {
+        connectToHabitica?: boolean,
+        habiticaUserId?: string,
+        habiticaApiToken?: string,
+    },
+    blocker: {
+        blocklist?: string[],
+        whitelist?: string[],
+        freePassSchedule?: Date[]
     }
 }

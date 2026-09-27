@@ -130,6 +130,6 @@ export function initializePomodoroTimer (){
  * @param {UserSettings} passedUserSettings
  */
 export function updatePomodoroValues(passedUserSettings) {
-    pomodoroDuration = parseInt(passedUserSettings.pomodoro.timerDurationMinutes) * secondsInaMinute;
-    restartCountdown();
+  pomodoroDuration = Number(passedUserSettings.pomodoro.timerDurationMinutes) * secondsInaMinute;
+  restartCountdown();
 }
